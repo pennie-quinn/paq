@@ -9,7 +9,7 @@ libraries
 library                               | lastest version | category | LoC | description
 ------------------------------------- | --------------- | -------- | --- | --------------------------------
 **[paq_aseprite.h](paq_aseprite.h)** | 1.01            | graphics |1634 | decode [Aseprite](https://www.aseprite.org/) files from file/memory/callbacks
-**[paq_wav.h](paq_wav.ase)**         | 1.00            | audio    | 400 | load .wav files from file/memory/callbacks  
+**[paq_wav.h](paq_wav.ase)**         | 1.01            | audio    | 400 | load .wav files from file/memory/callbacks  
 
 Total libraries: 2  
 Total lines of C code: 2034

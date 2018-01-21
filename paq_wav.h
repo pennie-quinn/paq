@@ -1,5 +1,5 @@
 /*
-paq_wav.h - v1.00 - public domain barebones wav loader
+paq_wav.h - v1.0 - public domain barebones wav loader
 https://github.com/pennie-quinn/paq
 
 	*** no warranty implied; use at your own risk ***
@@ -39,6 +39,7 @@ NOTES:
 
 
 CHANGELOG:
+	- 1.01  (2018-10-21) bugfix: dwSamples was calculated incorrectly
 	- 1.00  (2018-01-19) first release
 
 
@@ -127,7 +128,7 @@ File Format Reference
 //////////////////////////////////////////////////////////////////////////////
 // macros / config
 //
-#define WAV_DEBUG 0
+#define WAV_DEBUG 1
 
 #define WAV_BOOL int
 
@@ -510,7 +511,7 @@ WAV__decode_main(WAV__ctx *F, WAV_Data *Doc)
 		return(0);
 	}
 
-	Doc->dwSamples = DataChunkSize / Doc->wChannels;
+	Doc->dwSamples = DataChunkSize / (Doc->wBitsPerSample / 8) / Doc->wChannels;
 
 	return(1);
 }
@@ -578,6 +579,8 @@ WAV_convert_to_8bit  (WAV_Data *Loaded)
 	WAV_ASSERT(Loaded && Loaded->data, "invalid arg");
 	if (WAV_8BIT == Loaded->wBitsPerSample) return; // no conversion needed
 
+	WAV_DBG(" - WAV: converting to 8bit - \n");
+
 	int8_t *NewData = (int8_t *)WAV_MALLOC(
 		Loaded->dwSamples * Loaded->wChannels);
 	int8_t *D = NewData;
@@ -608,6 +611,8 @@ WAV_convert_to_16bit (WAV_Data *Loaded)
 	WAV_ASSERT(Loaded && Loaded->data, "invalid arg");
 	if (WAV_16BIT == Loaded->wBitsPerSample) return; // no conversion needed
 
+	WAV_DBG(" - WAV: converting to 8bit - \n");
+
 	int16_t *NewData = (int16_t *)WAV_MALLOC(
 		Loaded->dwSamples * Loaded->wChannels * 2);
 	int16_t *D = NewData;
@@ -637,6 +642,8 @@ WAV_convert_to_float (WAV_Data *Loaded)
 {
 	WAV_ASSERT(Loaded && Loaded->data, "invalid arg");
 	if (WAV_FLOAT == Loaded->wBitsPerSample) return; // no conversion needed
+
+	WAV_DBG(" - WAV: converting to 8bit - \n");
 
 	float *NewData = (float *)WAV_MALLOC(
 		Loaded->dwSamples * Loaded->wChannels * 4);
